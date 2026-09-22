@@ -1,3 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
 @import 'tailwindcss';
+:root { --font-body: 'DM Sans', sans-serif; --font-display: 'Playfair Display', serif; --font-hand: 'Caveat', cursive; color-scheme: light; font-family: var(--font-body); font-synthesis: none; }
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #e7e2d7; }
+body { min-width: 320px; min-height: 100dvh; margin: 0; background: radial-gradient(circle at 10% 0%, rgba(255,255,255,.7), transparent 34%), #e7e2d7; }
+button:focus-visible { outline: 3px solid #e1ad64; outline-offset: 3px; }
