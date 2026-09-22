@@ -100,6 +100,30 @@ const SECONDARY_IMAGES = [
   'https://media.assettype.com/tribune%2F2025-12-15%2Fyi0i4tss%2FIMG7933.jpeg?auto=format%2Ccompress&fit=crop&h=900&rect=0%2C232%2C1538%2C1154&w=1200'
 ] as const;
 
+const EXTRA_IMAGES = [
+  'https://media.karousell.com/media/photos/products/2026/1/29/gen_admission_tj_monterde_and__1769661504_86f536ad_progressive.jpg',
+  'https://pbs.twimg.com/media/G4BBoyyXAAA3ros.jpg',
+  'https://aphrodite.gmanetwork.com/entertainment/gallery/640_480_main__20201009112056.jpg',
+  'https://aphrodite.gmanetwork.com/imagefiles/1726021709_1626556581_11_ent.jpg',
+  'https://mindanaoan.com/wp-content/uploads/2013/05/599003_10151497370144061_1038807310_n.jpg',
+  'https://wowcdo.com/wp-content/uploads/2013/05/TJ-Monterde-Songs.jpg'
+] as const;
+
+const SLIDE_IMAGE_COUNTS = [1, 2, 3, 2, 4, 2, 5, 1, 2, 3, 2, 4, 1, 2, 3, 2, 4, 1, 2, 1, 1, 2] as const;
+const ALL_SLIDE_IMAGES = [...SLIDE_IMAGES, ...SECONDARY_IMAGES, ...EXTRA_IMAGES];
+
+function groupImagesBySlide(images: readonly string[], counts: readonly number[]): readonly (readonly string[])[] {
+  let startIndex = 0;
+
+  return counts.map((count) => {
+    const slideImages = images.slice(startIndex, startIndex + count);
+    startIndex += count;
+    return slideImages;
+  });
+}
+
+const SLIDE_IMAGE_SETS = groupImagesBySlide(ALL_SLIDE_IMAGES, SLIDE_IMAGE_COUNTS);
+
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
   protected readonly slides = SLIDES;
@@ -107,8 +131,7 @@ export class App {
   protected readonly navigationDirection = signal<NavigationDirection>('forward');
   protected readonly notesVisible = signal(false);
   protected readonly currentSlide = computed(() => this.slides[this.activeIndex()]);
-  protected readonly currentImage = computed(() => SLIDE_IMAGES[this.activeIndex()]);
-  protected readonly currentSecondaryImage = computed(() => SECONDARY_IMAGES[this.activeIndex()]);
+  protected readonly currentImages = computed(() => SLIDE_IMAGE_SETS[this.activeIndex()]);
   protected readonly progress = computed(() => ((this.activeIndex() + 1) / this.slides.length) * 100);
 
   @HostListener('window:keydown', ['$event'])

@@ -35,24 +35,30 @@
       @if (slide.quote) { <blockquote>{{ slide.quote }}</blockquote> }
     </div>
 
-    <div class="photo-collage" aria-label="Photo collage">
-      <span class="paper-scrap" aria-hidden="true"></span>
-      <span class="collage-note" aria-hidden="true">moments<br><small>in music</small></span>
+    <div class="photo-collage" [attr.data-count]="currentImages().length" aria-label="Photo collage">
+      @if (currentImages().length > 1) {
+        <span class="paper-scrap" aria-hidden="true"></span>
+        <span class="collage-note" aria-hidden="true">moments<br><small>in music</small></span>
+      }
 
-      <figure class="photo-card photo-primary">
-        <img [src]="currentImage()" [alt]="slide.imageAlt ?? ''" referrerpolicy="no-referrer" decoding="async">
-        <figcaption>{{ slide.imageCaption }}</figcaption>
-        <span class="tape" aria-hidden="true"></span>
-      </figure>
+      @for (image of currentImages(); track image; let imageIndex = $index) {
+        <figure [class]="'photo-card photo-' + (imageIndex + 1)">
+          <img
+            [src]="image"
+            [alt]="imageIndex === 0 ? (slide.imageAlt ?? '') : 'TJ Monterde scrapbook moment ' + (imageIndex + 1)"
+            referrerpolicy="no-referrer"
+            decoding="async"
+          >
+          @if (imageIndex === 0) { <figcaption>{{ slide.imageCaption }}</figcaption> }
+          <span class="tape" [class.tape-small]="imageIndex > 0" aria-hidden="true"></span>
+        </figure>
+      }
 
-      <figure class="photo-card photo-secondary">
-        <img [src]="currentSecondaryImage()" alt="Another moment from TJ Monterde's musical journey" referrerpolicy="no-referrer" decoding="async">
-        <span class="tape tape-small" aria-hidden="true"></span>
-      </figure>
-
-      <svg class="botanical-line" viewBox="0 0 170 150" aria-hidden="true">
-        <path d="M12 140C54 113 76 81 94 20M46 111c-16 2-25-4-30-16 14-2 24 3 30 16Zm22-25c-16-2-24-10-25-23 14 1 23 9 25 23Zm20-31c-14-7-18-17-15-29 13 6 18 16 15 29Zm-25 48c3-15 12-23 25-24-2 14-10 22-25 24Zm22-31c6-14 16-20 29-17-5 13-15 19-29 17Zm13-34c6-12 16-16 27-12-6 11-15 16-27 12Z" />
-      </svg>
+      @if (currentImages().length > 1) {
+        <svg class="botanical-line" viewBox="0 0 170 150" aria-hidden="true">
+          <path d="M12 140C54 113 76 81 94 20M46 111c-16 2-25-4-30-16 14-2 24 3 30 16Zm22-25c-16-2-24-10-25-23 14 1 23 9 25 23Zm20-31c-14-7-18-17-15-29 13 6 18 16 15 29Zm-25 48c3-15 12-23 25-24-2 14-10 22-25 24Zm22-31c6-14 16-20 29-17-5 13-15 19-29 17Zm13-34c6-12 16-16 27-12-6 11-15 16-27 12Z" />
+        </svg>
+      }
     </div>
 
     <aside class="side-note" aria-label="Scrapbook annotation"><span>tj monterde</span><small>words · roots · feeling</small></aside>
