@@ -38,12 +38,21 @@ h1 { max-width: 760px; margin: 0; font-family: var(--font-display); font-size: c
 .story-points li:nth-child(6) { animation-delay: 440ms; }
 .story-points li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
 blockquote { max-width: 560px; margin: 28px 0 0; padding: 15px 0 0; border-top: 1px solid color-mix(in srgb, var(--ink) 23%, transparent); font-family: var(--font-display); font-size: clamp(18px, 1.7vw, 25px); font-style: italic; line-height: 1.28; }
-.photo-card { position: relative; z-index: 2; width: min(84%, 470px); margin: 0 4% 0 auto; padding: 13px 13px 46px; background: #f7f2e8; box-shadow: 0 24px 42px rgba(23, 28, 23, .28); transform: rotate(2.6deg); animation: photo-in 700ms 80ms ease both; }
+.photo-collage { position: relative; z-index: 2; width: min(100%, 530px); height: clamp(410px, 48vw, 535px); margin-left: auto; }
+.photo-card { position: absolute; z-index: 2; margin: 0; padding: 11px 11px 42px; background: #f9f5ec; box-shadow: 0 22px 38px rgba(23, 28, 23, .25); animation: photo-in 720ms 120ms cubic-bezier(.2,.75,.25,1) both; }
+.photo-primary { top: 1%; right: 0; width: 72%; transform: rotate(3.4deg); }
+.photo-secondary { bottom: 0; left: 0; z-index: 3; width: 55%; padding-bottom: 11px; transform: rotate(-5.5deg); animation-delay: 230ms; }
 .slide-backward .photo-card { animation-name: photo-backward; }
 .photo-card::after { content: ''; position: absolute; inset: 13px 13px 46px; box-shadow: inset 0 0 35px rgba(20, 30, 23, .12); pointer-events: none; }
-.photo-card img { display: block; width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover; filter: saturate(.76) contrast(.95) sepia(.08); }
+.photo-card img { display: block; width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover; filter: saturate(.78) contrast(.96) sepia(.06); }
+.photo-secondary img { aspect-ratio: 1 / .92; }
 .photo-card figcaption { position: absolute; right: 20px; bottom: 12px; color: #424942; font-family: var(--font-hand); font-size: 18px; transform: rotate(-2deg); }
 .tape { position: absolute; top: -20px; left: 50%; width: 108px; height: 42px; background: rgba(226, 212, 167, .78); transform: translateX(-50%) rotate(-4deg); box-shadow: 0 1px 1px rgba(54, 46, 34, .12); }
+.tape-small { top: -14px; width: 74px; height: 30px; transform: translateX(-50%) rotate(5deg); }
+.paper-scrap { position: absolute; top: -10%; right: -15%; width: 78%; height: 36%; background: #c99d4d; clip-path: polygon(0 12%, 9% 18%, 19% 10%, 31% 17%, 44% 8%, 57% 16%, 69% 7%, 82% 14%, 100% 4%, 100% 86%, 86% 94%, 72% 86%, 55% 96%, 39% 88%, 23% 97%, 9% 87%); opacity: .7; transform: rotate(5deg); }
+.collage-note { position: absolute; top: 3%; left: 0; z-index: 4; color: var(--ink); font-family: var(--font-hand); font-size: 31px; line-height: .65; transform: rotate(-8deg); animation: note-in 600ms 360ms ease both; }
+.collage-note small { font-family: var(--font-body); font-size: 7px; font-weight: 800; letter-spacing: .25em; text-transform: uppercase; }
+.botanical-line { position: absolute; right: -7%; bottom: -8%; z-index: 4; width: 40%; overflow: visible; fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.3; opacity: .7; animation: branch-in 900ms 400ms ease both; }
 .side-note { position: absolute; right: 18px; bottom: 38px; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); }
 .side-note span { font-family: var(--font-display); font-size: 14px; font-style: italic; }
 .side-note small { margin-top: 14px; font-size: 8px; letter-spacing: .2em; text-transform: uppercase; }
@@ -69,6 +78,8 @@ footer { justify-content: space-between; padding: 4px 1px 0; color: #7e867f; fon
 @keyframes point-in { from { opacity: 0; transform: translateY(8px); } }
 @keyframes photo-in { from { opacity: 0; transform: translateX(45px) rotate(7deg) scale(.94); } }
 @keyframes photo-backward { from { opacity: 0; transform: translateX(-45px) rotate(-3deg) scale(.94); } }
+@keyframes note-in { from { opacity: 0; transform: translateY(-10px) rotate(-12deg); } }
+@keyframes branch-in { from { opacity: 0; transform: translateY(18px); } }
 @keyframes notes-in { from { opacity: 0; transform: translateY(14px); } }
 @media (max-width: 800px) {
   .scrapbook-shell { padding: 14px 14px 12px; }
@@ -79,7 +90,9 @@ footer { justify-content: space-between; padding: 4px 1px 0; color: #7e867f; fon
   .slide-index { margin-bottom: 18px; }
   .story-points { margin-top: 23px; }
   blockquote { margin-top: 22px; }
-  .photo-card { width: min(76%, 390px); margin: 52px auto 0; }
+  .photo-collage { width: min(100%, 430px); height: 440px; margin: 58px auto 0; }
+  .photo-primary { width: 72%; }
+  .photo-secondary { width: 57%; }
   .photo-card img { aspect-ratio: 4 / 3.7; }
   .scribble-top { right: 10%; }
   .side-note { display: none; }

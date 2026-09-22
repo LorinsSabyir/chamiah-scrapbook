@@ -75,6 +75,31 @@ const SLIDES: readonly ScrapbookSlide[] = [
 
 const SLIDE_IMAGES = Object.values(IMAGES).slice(0, SLIDES.length);
 
+const SECONDARY_IMAGES = [
+  'https://usa.inquirer.net/files/2025/02/TJ.png',
+  'https://www.lionheartv.net/wp-content/uploads/2024/06/TJ-MONTERDE-20.jpg',
+  'https://i.ytimg.com/vi/fu9yk7gCTbc/hq720.jpg',
+  'https://entertainment.inquirer.net/files/2024/08/Screenshot-2024-08-30-at-2.47.06%E2%80%AFPM.png',
+  'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7f/ca/3f/7fca3f88-7530-5cbc-3025-5886f1d2c9e3/3616405578654.jpg/3000x3000bb.jpg',
+  'https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/b2/d9/6d/b2d96dcf-5648-180d-820f-17d79db90f5e/file_cropped.png/5336x5336bb.jpg',
+  'https://og.rythm.fm/release/166226607965134848',
+  'https://www.guitartabsexplorer.com/artisthires/tj-monterde.webp',
+  'https://static.yesfm.com.ph/posts/2024/10/tUnBFkENhRcqs-7b9nw9d.png',
+  'https://is1-ssl.mzstatic.com/image/thumb/Music2/v4/ed/bb/fe/edbbfe3f-0142-c581-7d06-4d0e58f49d86/Ikaw_At_Ako_-_TJ_Monterde.jpg/600x600bf-60.jpg',
+  'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/95/b3/0f/95b30f83-75f5-e62a-b7ae-8b3224894a32/4800635059628.jpg/800x800cc.jpg',
+  'https://i1.sndcdn.com/artworks-dzXIEXzQpUXp-0-t1080x1080.png',
+  'https://pbs.twimg.com/media/G5y5PTGbUAAGa5H.jpg',
+  'https://pbs.twimg.com/media/G4q3PElbQAEKv31.jpg',
+  'https://static.easyrock.com.ph/posts/2025/10/wTohjirVWn495pACbdjrv.png',
+  'https://images1.smtickets.com/images/portrait_14012026162318.jpg',
+  'https://od2-image-api.abs-cbn.com/prod/editorImage/1770277927904590709138_1410608367362366_5675951918506370406_n.jpg',
+  'https://pbs.twimg.com/media/HBB7R4laIAA70Dq.jpg',
+  'https://pbs.twimg.com/media/G_zQY8ObUAIOm_T.jpg',
+  'https://d2nnykqiaju69u.cloudfront.net/photos/Pinky/KZ%20Tandingan/META.jpg',
+  'https://mega-asia.com/wp-content/uploads/2020/10/kzw-6.jpg',
+  'https://media.assettype.com/tribune%2F2025-12-15%2Fyi0i4tss%2FIMG7933.jpeg?auto=format%2Ccompress&fit=crop&h=900&rect=0%2C232%2C1538%2C1154&w=1200'
+] as const;
+
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
   protected readonly slides = SLIDES;
@@ -83,6 +108,7 @@ export class App {
   protected readonly notesVisible = signal(false);
   protected readonly currentSlide = computed(() => this.slides[this.activeIndex()]);
   protected readonly currentImage = computed(() => SLIDE_IMAGES[this.activeIndex()]);
+  protected readonly currentSecondaryImage = computed(() => SECONDARY_IMAGES[this.activeIndex()]);
   protected readonly progress = computed(() => ((this.activeIndex() + 1) / this.slides.length) * 100);
 
   @HostListener('window:keydown', ['$event'])
