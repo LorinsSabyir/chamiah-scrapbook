@@ -1,6 +1,7 @@
 import { Component, HostListener, computed, signal } from '@angular/core';
 
 type SlideTheme = 'cream' | 'forest' | 'clay' | 'sage';
+type NavigationDirection = 'forward' | 'backward';
 
 interface ScrapbookSlide {
   readonly number: string;
@@ -17,12 +18,33 @@ interface ScrapbookSlide {
 }
 
 const IMAGES = {
+  cover: 'https://i.scdn.co/image/ab6761610000e5eb2598127d529b55dcb37d1428',
+  biography: 'https://i.scdn.co/image/ab6761610000e5eb262b69fed44e0ee1219d92d5',
+  earlyCareer: 'https://4.bp.blogspot.com/-5fs2-tSyL6c/Ua4LQZj4mDI/AAAAAAAAHws/rIfoCBITKGI/s1600/2.jpg',
+  bigDecision: 'https://s1.dmcdn.net/v/YRqR01eBsJWkhgVFr/x1080',
+  hardYears: 'https://media.philstar.com/images/the-philippine-star/entertainment/20170614/TJ-Monteverde-3.jpg',
+  songwriter: 'https://static.easyrock.com.ph/posts/2024/10/G9Qt8rjNhTsPacCso0vVj.png',
+  songbook: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/da/51/72/da51724f-6839-62b7-6c9b-32b55311ce41/196873949192.jpg/1200x630bb.jpg',
+  bisayaIdentity: 'https://aphrodite.gmanetwork.com/entertainment/articles/900_675_3_-20221129142441.jpg',
+  palagi: 'https://od2-image-api.abs-cbn.com/prod/20241025121044/9d82fa28f15046242c47ef9e728baa148569e0675fcc77c4d322679d5b4dcebc.jpg?h=800&w=1200',
+  puhonArtwork: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7f/ca/3f/7fca3f88-7530-5cbc-3025-5886f1d2c9e3/3616405578654.jpg/1200x630wp-60.jpg',
+  puhonRecording: 'https://aphrodite.gmanetwork.com/entertainment/articles/900_675_Main_Image05_0625__20200625142536.jpg',
+  personalPuhon: 'https://img.youtube.com/vi/GcgPbu5CxX8/sddefault.jpg',
+  wedding: 'https://aphrodite.gmanetwork.com/entertainment/photos/photo/in_photos__kz_tandingan_and_tj_monterde_s_wedding_can_t_wait_to_say_i_do_1602213765.jpg',
+  bigDome: 'https://aphrodite.gmanetwork.com/entertainment/photos/photo/tj_monterde_concludes__sarili_nating_mundo__at_ikaw_at_ako_1738638359.jpg',
+  today: 'https://cornerstoneent.ph/storage/slider/images/01KH9849YCGTC28J3XRC2TVGQG.png',
+  artistPortrait: 'https://m.media-amazon.com/images/M/MV5BZjAwOGUxNzktOWUwYi00YjUxLWIxNmEtMjI1YzYyZDA2MmQwXkEyXkFqcGc%40._V1_.jpg',
+  candidPortrait: 'https://media.philstar.com/photos/2025/01/30/tj-0_2025-01-30_16-43-39_gallery.jpg',
+  guitarPortrait: 'https://4.bp.blogspot.com/-8lGGy9CqPLY/WZB5gPdoMEI/AAAAAAAA-lQ/pmtFGk-v5zYBoX2gzEOEu07OrqxDM92CACLcBGAs/s1600/TJ%2BMonterde%2B1.jpg',
+  worldTour: 'https://media.assettype.com/gulfnews/2025-07-11/ku9r9017/tjmusicmonterde-insta2.jpeg?ar=40%3A21&auto=format%2Ccompress&enlarge=true&mode=crop&ogImage=true&overlay=false&overlay_position=bottom&overlay_width=100&w=1200',
+  gallery: 'https://d1ef7ke0x2i9g8.cloudfront.net/manila/kz.jpg',
+  closing: 'https://d2nnykqiaju69u.cloudfront.net/photos/Pinky/KZ%20Tandingan/KZ2.png',
+  references: 'https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/62/31/ce/6231ce6c-d170-93ac-d743-0428b6bf541e/8721056911271.png/1200x1200bf-60.jpg',
   portrait: 'https://i.scdn.co/image/ab6761610000e5eb2598127d529b55dcb37d1428',
   portraitTwo: 'https://i.scdn.co/image/ab6761610000e5eb262b69fed44e0ee1219d92d5',
   live: 'https://usa.inquirer.net/files/2025/02/TJ.png',
   guitar: 'https://www.lionheartv.net/wp-content/uploads/2024/06/TJ-MONTERDE-20.jpg',
   puhon: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7f/ca/3f/7fca3f88-7530-5cbc-3025-5886f1d2c9e3/3616405578654.jpg/1200x630wp-60.jpg',
-  palagi: 'https://i.ytimg.com/vi/fu9yk7gCTbc/hq720.jpg',
   couple: 'https://entertainment.inquirer.net/files/2024/08/Screenshot-2024-08-30-at-2.47.06%E2%80%AFPM.png'
 } as const;
 
@@ -51,12 +73,16 @@ const SLIDES: readonly ScrapbookSlide[] = [
   { number: '22', eyebrow: 'Read & listen further', title: 'References', bullets: ['Billboard Philippines — “Palagi,” No. 1 Song of 2024', 'Billboard Philippines — Sariling Mundo at the Big Dome', 'The Philippine Star — TJ on Bisaya music and “Puhon”', 'ABS-CBN News — the making of “Puhon”', 'Philstar Life — TJ & KZ’s marriage', 'Official artist releases on Spotify / Apple Music'], quote: 'Facts verified September 2026.', imageUrl: IMAGES.portraitTwo, imageAlt: 'Portrait of TJ Monterde', imageCaption: 'salamat sa pagpaminaw', speakerNotes: 'These sources were used to verify the biography, song histories, chart milestones, and relationship details. Image credits belong to their respective publishers and official music platforms.', theme: 'cream' }
 ];
 
+const SLIDE_IMAGES = Object.values(IMAGES).slice(0, SLIDES.length);
+
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App {
   protected readonly slides = SLIDES;
   protected readonly activeIndex = signal(0);
+  protected readonly navigationDirection = signal<NavigationDirection>('forward');
   protected readonly notesVisible = signal(false);
   protected readonly currentSlide = computed(() => this.slides[this.activeIndex()]);
+  protected readonly currentImage = computed(() => SLIDE_IMAGES[this.activeIndex()]);
   protected readonly progress = computed(() => ((this.activeIndex() + 1) / this.slides.length) * 100);
 
   @HostListener('window:keydown', ['$event'])
@@ -68,8 +94,16 @@ export class App {
     if (event.key === 'ArrowLeft') this.showPreviousSlide();
   }
 
-  protected showNextSlide(): void { this.activeIndex.update((index) => Math.min(index + 1, this.slides.length - 1)); }
-  protected showPreviousSlide(): void { this.activeIndex.update((index) => Math.max(index - 1, 0)); }
-  protected showSlide(index: number): void { this.activeIndex.set(index); }
+  protected showNextSlide(): void { this.showSlide(this.activeIndex() + 1); }
+  protected showPreviousSlide(): void { this.showSlide(this.activeIndex() - 1); }
+
+  protected showSlide(index: number): void {
+    const nextIndex = Math.max(0, Math.min(index, this.slides.length - 1));
+    if (nextIndex === this.activeIndex()) return;
+
+    this.navigationDirection.set(nextIndex > this.activeIndex() ? 'forward' : 'backward');
+    this.activeIndex.set(nextIndex);
+  }
+
   protected toggleNotes(): void { this.notesVisible.update((visible) => !visible); }
 }

@@ -12,30 +12,38 @@
 
   <div class="progress-track" aria-hidden="true"><span [style.width.%]="progress()"></span></div>
 
-  <section class="stage" [attr.data-theme]="currentSlide().theme" aria-live="polite">
+  @for (slide of [currentSlide()]; track slide.number) {
+  <section
+    class="stage"
+    [class.slide-forward]="navigationDirection() === 'forward'"
+    [class.slide-backward]="navigationDirection() === 'backward'"
+    [attr.data-theme]="slide.theme"
+    aria-live="polite"
+  >
     <div class="paper-texture" aria-hidden="true"></div>
     <span class="scribble scribble-top" aria-hidden="true"></span>
     <span class="scribble scribble-bottom" aria-hidden="true"></span>
 
     <div class="slide-copy">
-      <div class="slide-index">{{ currentSlide().number }}</div>
-      <p class="eyebrow">{{ currentSlide().eyebrow }}</p>
-      <h1>{{ currentSlide().title }}</h1>
-      @if (currentSlide().subtitle) { <p class="subtitle">{{ currentSlide().subtitle }}</p> }
+      <div class="slide-index">{{ slide.number }}</div>
+      <p class="eyebrow">{{ slide.eyebrow }}</p>
+      <h1>{{ slide.title }}</h1>
+      @if (slide.subtitle) { <p class="subtitle">{{ slide.subtitle }}</p> }
       <ul class="story-points">
-        @for (point of currentSlide().bullets; track point) { <li>{{ point }}</li> }
+        @for (point of slide.bullets; track point) { <li>{{ point }}</li> }
       </ul>
-      @if (currentSlide().quote) { <blockquote>{{ currentSlide().quote }}</blockquote> }
+      @if (slide.quote) { <blockquote>{{ slide.quote }}</blockquote> }
     </div>
 
     <figure class="photo-card">
-      @if (currentSlide().imageUrl) { <img [src]="currentSlide().imageUrl" [alt]="currentSlide().imageAlt ?? ''" referrerpolicy="no-referrer"> }
-      <figcaption>{{ currentSlide().imageCaption }}</figcaption>
+      <img [src]="currentImage()" [alt]="slide.imageAlt ?? ''" referrerpolicy="no-referrer">
+      <figcaption>{{ slide.imageCaption }}</figcaption>
       <span class="tape" aria-hidden="true"></span>
     </figure>
 
     <aside class="side-note" aria-label="Scrapbook annotation"><span>tj monterde</span><small>words · roots · feeling</small></aside>
   </section>
+  }
 
   <nav class="controls" aria-label="Presentation controls">
     <button type="button" (click)="showPreviousSlide()" [disabled]="activeIndex() === 0" aria-label="Previous slide">←</button>
